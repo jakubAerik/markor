@@ -35,6 +35,8 @@ import android.view.WindowManager;
 import com.pixplicity.generate.Rate;
 
 import net.gsantner.markor.R;
+import net.gsantner.markor.ui.FileInfoDialog;
+import net.gsantner.markor.ui.NewFileDialog;
 import net.gsantner.markor.ui.SearchOrCustomTextDialogCreator;
 import net.gsantner.markor.util.ActivityUtils;
 import net.gsantner.markor.util.AppCast;
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private AppSettings _appSettings;
     private ActivityUtils _contextUtils;
+
+    private String _currentTitle;
 
 
     @Override
@@ -209,6 +213,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
         lbm.registerReceiver(_localBroadcastReceiver, AppCast.getLocalBroadcastFilter());
+
+        if (_appSettings.isKeepScreenOn()) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
     }
 
     @Override
@@ -232,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     } else {
                         _toolbar.setTitle("> " + currentDir.getName());
                     }
+                    _currentTitle = _toolbar.getTitle().toString();
                     return;
                 }
             }
@@ -245,35 +256,32 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         shu.extractResultFromActivityResult(requestCode, resultCode, data);
     }
 
-    @OnLongClick({R.id.fab_add_new_item})
-    public boolean onLongClickedFab(View view) {
-        switch (view.getId()) {
-            case R.id.fab_add_new_item: {
-                if (_viewPagerAdapter.getFragmentByTag(WrFilesystemListFragment.FRAGMENT_TAG) != null) {
-                    ((WrFilesystemListFragment) _viewPagerAdapter.getFragmentByTag(WrFilesystemListFragment.FRAGMENT_TAG))
-                            .showCreateFolderDialog();
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
     @OnClick({R.id.fab_add_new_item})
     public void onClickFab(View view) {
         PermissionChecker permc = new PermissionChecker(this);
         if (permc.mkdirIfStoragePermissionGranted()) {
             switch (view.getId()) {
                 case R.id.fab_add_new_item: {
-                    Intent intent = new Intent(this, DocumentActivity.class);
-                    if (_viewPagerAdapter.getFragmentByTag(WrFilesystemListFragment.FRAGMENT_TAG) != null) {
-                        File path = ((WrFilesystemListFragment) _viewPagerAdapter.getFragmentByTag(WrFilesystemListFragment.FRAGMENT_TAG)).getCurrentDir();
-                        intent.putExtra(DocumentIO.EXTRA_PATH, path);
-                    } else {
-                        intent.putExtra(DocumentIO.EXTRA_PATH, _appSettings.getNotebookDirectory());
-                    }
-                    intent.putExtra(DocumentIO.EXTRA_PATH_IS_FOLDER, true);
-                    startActivity(intent);
+
+                    WrFilesystemListFragment frag = (WrFilesystemListFragment) _viewPagerAdapter.getFragmentByTag(WrFilesystemListFragment.FRAGMENT_TAG);
+
+                    NewFileDialog dialog = NewFileDialog.newInstance(frag != null ? frag.getCurrentDir() : AppSettings.get().getNotebookDirectory(), (ok, f) -> {
+                        if (ok) {
+                            if (f.isFile()) {
+                                Intent intent = new Intent(this, DocumentActivity.class);
+                                intent.putExtra(DocumentIO.EXTRA_PATH, f);
+                                intent.putExtra(DocumentIO.EXTRA_PATH_IS_FOLDER, false);
+                                startActivity(intent);
+                            } else if (f.isDirectory()) {
+
+                                WrFilesystemListFragment wrFragment = (WrFilesystemListFragment) _viewPagerAdapter.getFragmentByTag(WrFilesystemListFragment.FRAGMENT_TAG);
+                                if (wrFragment != null) {
+                                    wrFragment.listFilesInDirectory(wrFragment.getCurrentDir(), true);
+                                }
+                            }
+                        }
+                    });
+                    dialog.show(getSupportFragmentManager(), NewFileDialog.FRAGMENT_TAG);
                     break;
                 }
             }
@@ -307,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.nav_notebook: {
                 _viewPager.setCurrentItem(0);
+                _toolbar.setTitle(_currentTitle);
                 return true;
             }
 
@@ -314,17 +323,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 permc.doIfExtStoragePermissionGranted(); // cannot prevent bottom tab selection
                 restoreDefaultToolbar();
                 _viewPager.setCurrentItem(1);
+                _toolbar.setTitle(R.string.todo);
                 return true;
             }
             case R.id.nav_quicknote: {
                 permc.doIfExtStoragePermissionGranted(); // cannot prevent bottom tab selection
                 restoreDefaultToolbar();
                 _viewPager.setCurrentItem(2);
+                _toolbar.setTitle(R.string.quicknote);
                 return true;
             }
             case R.id.nav_more: {
                 restoreDefaultToolbar();
                 _viewPager.setCurrentItem(3);
+                _toolbar.setTitle(R.string.more);
                 return true;
             }
         }

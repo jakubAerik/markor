@@ -11,6 +11,11 @@
 package net.gsantner.opoc.util;
 
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -29,6 +34,7 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -39,6 +45,13 @@ import java.util.regex.Pattern;
 public class FileUtils {
     // Used on methods like copyFile(src, dst)
     private static final int BUFFER_SIZE = 4096;
+    private final Activity mContext;
+    private static final String PATH_SEPERATOR = "/";
+    private static final String pdfExtension = ".pdf";
+
+    public FileUtils(Activity mContext) {
+        this.mContext = mContext;
+    }
 
     public static String readTextFileFast(final File file) {
         try {
@@ -58,6 +71,42 @@ public class FileUtils {
 
         return "";
     }
+
+    public static String getFormattedDate(File file) {
+        Date lastModDate = new Date(file.lastModified());
+        String[] formatdate = lastModDate.toString().split(" ");
+        String time = formatdate[3];
+        String[] formattime =  time.split(":");
+        String date = formattime[0] + ":" + formattime[1];
+        return formatdate[0] + ", " + formatdate[1] + " " + formatdate[2] + " at " + date;
+    }
+
+    public static String getFormattedSize(File file) {
+        return String.format("%.2f MB", (double) file.length() / (1024 * 1024));
+    }
+
+    public String getFileName(Uri uri) {
+        String fileName = null;
+        String scheme = uri.getScheme();
+        if (scheme.equals("file"))
+            fileName = uri.getLastPathSegment();
+        else if (scheme.equals("content")) {
+            Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null && cursor.getCount() != 0) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                fileName = cursor.getString(columnIndex);
+            }
+            if (cursor != null)
+                cursor.close();
+        }
+        return fileName;
+    }
+    public static String getFileName(String path) {
+        return path.substring(path.lastIndexOf(PATH_SEPERATOR) + 1);
+    }
+
+
 
     public static String readCloseTextStream(final InputStream stream) {
         return readCloseTextStream(stream, true).get(0);
@@ -107,6 +156,12 @@ public class FileUtils {
         return new byte[0];
     }
 
+    public static String getFileNameWithoutExtension(String path) {
+        String p = path.substring(path.lastIndexOf(PATH_SEPERATOR) + 1);
+        p = p.replace(pdfExtension, "");
+        return p;
+    }
+
     public static byte[] readCloseBinaryStream(final InputStream stream, int byteCount) {
         final ArrayList<String> lines = new ArrayList<>();
         BufferedInputStream reader = null;
@@ -133,6 +188,11 @@ public class FileUtils {
         }
         return buf;
     }
+
+    public static String getFileDirectoryPath(String path) {
+        return path.substring(0, path.lastIndexOf(PATH_SEPERATOR) + 1);
+    }
+
 
     // Read binary stream (of unknown conf size)
     public static byte[] readCloseBinaryStream(final InputStream stream) {

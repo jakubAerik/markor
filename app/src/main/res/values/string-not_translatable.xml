@@ -42,13 +42,17 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
     <string name="web_browser" translatable="false">Web browser</string>
     <string name="app_drawer_launcher_special_files_description" translatable="false">App drawer launchers: LinkBox, ToDo, QuickNote</string>
 
-
     <string name="category_to_context_project_to_tag" translatable="false">%1$s -> %2$s, %3$s -> %4$s</string>
     <string name="katex_latex" translatable="false">KaTex (LaTex)\n$ a^2 + b^2 = c^2 $</string>
     <string name="app_theme_light" translatable="false">light</string>
     <string name="app_theme_dark" translatable="false">dark</string>
     <string name="app_theme_auto" translatable="false">auto</string>
+    <string name="editor_basic_color_scheme_markor" translatable="false">Markor</string>
+    <string name="editor_basic_color_scheme_black_or_white" translatable="false">Black or White</string>
+    <string name="editor_basic_color_scheme_solarized" translatable="false">Solarized</string>
+    <string name="editor_basic_color_scheme_gruvbox" translatable="false">gruvbox</string>
     <string name="auto" translatable="false">Auto</string>
+    <string name="hexcode" translatable="false">Hexcode</string>
     <string name="markup_formats_supported_list" translatable="false">Markdown, ToDo.Txt, Plaintext</string>
 
 
@@ -172,7 +176,15 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
     <string name="pref_key__markdown_render_math" translatable="false">pref_key__markdown_render_math</string>
     <string name="pref_key__markdown_show_toc" translatable="false">pref_key__markdown_show_toc</string>
     <string name="pref_key__is_launcher_for_special_files_enabled" translatable="false">pref_key__is_launcher_for_special_files_enabled</string>
-
+    <string name="pref_key__editor_basic_color_scheme__bg_light" translatable="false">pref_key__editor_basic_color_scheme__bg_light</string>
+    <string name="pref_key__editor_basic_color_scheme__fg_light" translatable="false">pref_key__editor_basic_color_scheme__fg_light</string>
+    <string name="pref_key__editor_basic_color_scheme__bg_dark" translatable="false">pref_key__editor_basic_color_scheme__bg_dark</string>
+    <string name="pref_key__editor_basic_color_scheme__fg_dark" translatable="false">pref_key__editor_basic_color_scheme__fg_dark</string>
+    <string name="pref_key__editor_basic_color_scheme_solarized" translatable="false">pref_key__editor_basic_color_scheme_solarized</string>
+    <string name="pref_key__editor_basic_color_scheme_blackorwhite" translatable="false">pref_key__editor_basic_color_scheme_blackorwhite</string>
+    <string name="pref_key__editor_basic_color_scheme_markor" translatable="false">pref_key__editor_basic_color_scheme_markor</string>
+    <string name="pref_key__editor_basic_color_scheme_gruvbox" translatable="false">pref_key__editor_basic_color_scheme_gruvbox</string>
+    <string name="pref_key__is_keep_screen_on" translatable="false">pref_key__keep_screen_on</string>
 
     <string name="tmaid_markdown_quote" translatable="false">markdown_quote</string>
     <string name="tmaid_markdown_h1" translatable="false">markdown_h1</string>
@@ -183,13 +195,16 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
     <string name="tmaid_markdown_bold" translatable="false">tmaid_markdown_bold</string>
     <string name="tmaid_markdown_italic" translatable="false">tmaid_markdown_italic</string>
     <string name="tmaid_color_picker" translatable="false">tmaid_color_picker</string>
+    <string name="tmaid_markdown_checkbox" translatable="false">tmaid_checkbox</string>
     <string name="tmaid_markdown_strikeout" translatable="false">tmaid_markdown_strikeout</string>
     <string name="tmaid_markdown_code_inline" translatable="false">tmaid_markdown_code_inline</string>
     <string name="tmaid_markdown_horizontal_line" translatable="false">tmaid_markdown_horizontal_line</string>
-
     <string name="tmaid_general_delete_lines" translatable="false">tmaid_general_delete_lines</string>
     <string name="tmaid_general_open_link_browser" translatable="false">tmaid_general_open_link_browser</string>
     <string name="tmaid_markdown_insert_image" translatable="false">tmaid_markdown_insert_image</string>
     <string name="tmaid_markdown_insert_link" translatable="false">tmaid_markdown_insert_link</string>
     <string name="tmaid_general_special_key" translatable="false">tmaid_general_special_key</string>
+    <string name="my_note" translatable="false">my_note</string>
+    <string name="jekyll_post" translatable="false">Jekyll Post</string>
+    <string name="zim_wiki" translatable="false">Zim Wiki</string>
 </resources>

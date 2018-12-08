@@ -68,7 +68,6 @@ public class TodoTxtTextModuleActions extends TextModuleActions {
             //{R.drawable.ic_add_white_24dp, 5},
             {R.drawable.ic_archive_black_24dp, 7},
             {R.drawable.ic_date_range_black_24dp, 8},
-            {CommonTextModuleActions.ACTION_COLOR_PICKER_ICON, 9},
     };
     private static final String[] STT_INSERT_ACTIONS = {
             "toggle_done",

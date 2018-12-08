@@ -75,7 +75,7 @@ public class DocumentIO {
         if (extraPathIsFolder) {
             extraPath.mkdirs();
             while (filePath.exists()) {
-                filePath = new File(extraPath, String.format("%s-%s.%s", context.getString(R.string.document), UUID.randomUUID().toString(), MarkdownTextConverter.EXT_MARKDOWN__MD));
+                filePath = new File(extraPath, String.format("%s-%s%s", context.getString(R.string.document), UUID.randomUUID().toString(), MarkdownTextConverter.EXT_MARKDOWN__MD));
             }
         } else if (filePath.isFile() && filePath.canRead()) {
             // Extract existing extension
@@ -100,10 +100,22 @@ public class DocumentIO {
                 document.setFormat(TextFormat.FORMAT_TODOTXT);
             } else if (MarkdownTextConverter.isMarkdownFile(filePath)) {
                 document.setFormat(TextFormat.FORMAT_MARKDOWN);
-            } else if (fnlower.endsWith(".txt")) {
+            } else if (fnlower.endsWith(".txt") || fnlower.endsWith(".zim")) {
                 document.setFormat(TextFormat.FORMAT_PLAIN);
             } else {
+                String oldTitle = document.getTitle();
+                if(oldTitle.contains(".")){
+                    int lastIndexOfDot = oldTitle.lastIndexOf(".");
+
+                    //divide oldTitle to document title and file extension
+                    document.setFileExtension(oldTitle.substring(lastIndexOfDot));
+                    document.setTitle(oldTitle.substring(0,lastIndexOfDot));
+                }else{
+                    document.setFileExtension("");
+                    document.setTitle(oldTitle);
+                }
                 document.setFormat(TextFormat.FORMAT_PLAIN);
+
             }
         }
 
@@ -113,7 +125,7 @@ public class DocumentIO {
 
     public static synchronized boolean saveDocument(Document document, boolean argAllowRename, String currentText) {
         boolean ret;
-        String filename = DocumentIO.normalizeTitleForFilename(document) + document.getFileExtension();
+        String filename = DocumentIO.normalizeTitleForFilename(document, currentText) + document.getFileExtension();
         document.setDoHistory(true);
         document.setFile(new File(document.getFile().getParentFile(), filename));
 
@@ -146,14 +158,14 @@ public class DocumentIO {
         return ret;
     }
 
-    public static String normalizeTitleForFilename(Document _document) {
+    public static String normalizeTitleForFilename(Document _document, String currentContent) {
         String name = _document.getTitle();
         try {
             if (name.length() == 0) {
-                if (_document.getContent().length() == 0) {
+                if (currentContent.length() == 0) {
                     return null;
                 } else {
-                    String contentL1 = _document.getContent().split("\n")[0];
+                    String contentL1 = currentContent.split("\n")[0];
                     if (contentL1.length() < MAX_TITLE_EXTRACTION_LENGTH) {
                         name = contentL1;
                     } else {
