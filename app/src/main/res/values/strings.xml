@@ -248,6 +248,7 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
     <string name="zero_width_space">Zero-width space</string>
     <string name="basic_color_scheme">Basic color scheme</string>
     <string name="background_foreground_color_in_editor_works_dark_light">Changes background and foreground color of the text editor. Adjusts to app theme so available in light and dark theme. Syntax highlighting colors remain the same.</string>
+<<<<<<< HEAD
     <string name="preset">Preset</string>
     <string name="foreground">Foreground</string>
     <string name="background">Background</string>
@@ -256,4 +257,6 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
     <string name="folder">Folder</string>
     <string name="folder_is_created_without_extension">- Folder is created without file extension</string>
     <string name="keep_existing_file">- Files and folders are not overwritten</string>
+=======
+>>>>>>> colorpicker
 </resources>

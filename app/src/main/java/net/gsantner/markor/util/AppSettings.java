@@ -367,6 +367,7 @@ public class AppSettings extends SharedPreferencesPropertyBackend {
         return getBool(R.string.pref_key__todotxt__alternative_naming_context_project, true);
     }
 
+<<<<<<< HEAD
     public int getEditorBasicColorSchemeId() {
         return 0;
     }
@@ -393,6 +394,15 @@ public class AppSettings extends SharedPreferencesPropertyBackend {
 
     public int getEditorBackgroundColor() {
         /*switch (getEditorBasicColorSchemeId()) {
+=======
+    public int getEditorBasicColorSchemeId(){
+        return getIntOfStringPref(R.string.pref_key__editor_basic_color_scheme, 0);
+    }
+
+    public int getEditorBackgroundColor(){
+        boolean darkMode = isDarkThemeEnabled();
+        switch (getEditorBasicColorSchemeId()){
+>>>>>>> colorpicker
             default:
             case 0:
                 return rcolor(darkMode ? R.color.dark_grey : R.color.light__background);
@@ -402,6 +412,7 @@ public class AppSettings extends SharedPreferencesPropertyBackend {
                 return rcolor(darkMode ? R.color.solarized_bg_dark : R.color.solarized_bg_light);
             case 3:
                 return rcolor(darkMode ? R.color.solarized_bg_dark : R.color.solarized_bg_light);
+<<<<<<< HEAD
         }*/
 
         boolean darkMode = isDarkThemeEnabled();
@@ -420,4 +431,27 @@ public class AppSettings extends SharedPreferencesPropertyBackend {
         setInt(resIdFg, rcolor(fgColor));
         setInt(resIdBg, rcolor(bgColor));
     }
+=======
+        }
+    }
+
+    public int getEditorForegroundColor(){
+        boolean darkMode = isDarkThemeEnabled();
+        switch (getEditorBasicColorSchemeId()){
+            default:
+            case 0:
+                return rcolor(darkMode ? R.color.white :R.color.dark_grey);
+            case 1:
+                return rcolor(darkMode ? R.color.white : R.color.black);
+            case 2:
+                return rcolor(R.color.solarized_fg);
+            case 3:
+                return rcolor(R.color.solarized_fg);
+        }
+    }
+
+    public int getEditorTextactionBarColor(){
+        return rcolor(isDarkThemeEnabled() ? R.color.dark__background_2 : R.color.lighter_grey);
+    }
+>>>>>>> colorpicker
 }

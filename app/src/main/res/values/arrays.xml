@@ -46,6 +46,7 @@
         <item translatable="false">@string/key_tab</item>
         <item translatable="false">@string/search</item>
         <item translatable="false">@string/zero_width_space</item>
+<<<<<<< HEAD
     </string-array>
 
 
@@ -66,5 +67,7 @@
         <item translatable="false"></item>
         <item translatable="false">.md</item>
         <item translatable="false">.zim</item>
+=======
+>>>>>>> colorpicker
     </string-array>
 </resources>

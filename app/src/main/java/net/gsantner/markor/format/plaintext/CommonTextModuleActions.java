@@ -93,7 +93,11 @@ public class CommonTextModuleActions {
                     } else if (callbackPayload.equals(rstr(R.string.key_tab))) {
                         _hlEditor.insertOrReplaceTextOnCursor("\u0009");
                     } else if (callbackPayload.equals(rstr(R.string.zero_width_space))) {
+<<<<<<< HEAD
                         _hlEditor.insertOrReplaceTextOnCursor("\u200B");
+=======
+                            _hlEditor.insertOrReplaceTextOnCursor("\u200B");
+>>>>>>> colorpicker
                     } else if (callbackPayload.equals(rstr(R.string.search))) {
                         runAction(ACTION_SEARCH);
                     }
@@ -142,6 +146,7 @@ public class CommonTextModuleActions {
                 return true;
             }
             case ACTION_COLOR_PICKER: {
+<<<<<<< HEAD
                 SearchOrCustomTextDialogCreator.showColorSelectionModeDialog(_activity, new Callback.a1<Integer>() {
                     @Override
                     public void callback(Integer colorInsertType) {
@@ -179,6 +184,32 @@ public class CommonTextModuleActions {
                                 .show();
                     }
                 });
+=======
+                ColorPickerDialogBuilder
+                        .with(_hlEditor.getContext())
+                        .setTitle(R.string.color)
+                        .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                        .density(12)
+                        .setOnColorSelectedListener(new OnColorSelectedListener() {
+                            @Override
+                            public void onColorSelected(int selectedColor) {
+//                                Toast.makeText(_hlEditor.getContext(),"onColorSelected: 0x" + Integer.toHexString(selectedColor), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setPositiveButton(android.R.string.ok, new ColorPickerClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                                _hlEditor.setTextColor(selectedColor);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .build()
+                        .show();
+>>>>>>> colorpicker
                 return true;
             }
         }
